@@ -11,8 +11,10 @@ function draw() {
   // Usa a selfie como base e sempre cobre o canvas, evitando faixas vazias
   // ao redimensionar ou aplicar zoom.
   const scale = Math.max(canvas.width / image.width, canvas.height / image.height) * zoom;
-  const width = image.width * scale, height = image.height * scale;
-  ctx.drawImage(image, (canvas.width - width) / 2 + offset.x, (canvas.height - height) / 2 + offset.y, width, height);
+  const width = Math.ceil(image.width * scale), height = Math.ceil(image.height * scale);
+  const x = Math.floor((canvas.width - width) / 2 + offset.x);
+  const y = Math.floor((canvas.height - height) / 2 + offset.y);
+  ctx.drawImage(image, x, y, width, height);
 }
 function enterEditor(blob) {
   if (imageUrl) URL.revokeObjectURL(imageUrl);

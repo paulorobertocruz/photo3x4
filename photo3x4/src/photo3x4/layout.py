@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 
 def parse_size(value: str) -> tuple[int, int]:
@@ -25,15 +25,16 @@ def compose_photo(subject: Image.Image, size: tuple[int, int]) -> Image.Image:
         rgba = rgba.crop(bbox)
 
     width, height = size
-    # Preenche o quadro 3:4. O ``max`` faz o recorte necessário para que
-    # nunca sobrem faixas vazias quando a selfie tem outra proporção.
-    target_w, target_h = int(width * 0.96), int(height * 0.95)
-    scale = max(target_w / rgba.width, target_h / rgba.height)
-    resized = rgba.resize((max(1, int(rgba.width * scale)), max(1, int(rgba.height * scale))), Image.Resampling.LANCZOS)
+    # Faz o recorte final exatamente no tamanho do canvas. Isso evita faixas
+    # de 1 px causadas por arredondamento nas bordas da imagem exportada.
+    fitted = ImageOps.fit(
+        rgba,
+        size,
+        method=Image.Resampling.LANCZOS,
+        centering=(0.5, 0.40),
+    )
     canvas = Image.new("RGBA", size, "white")
-    x = (width - resized.width) // 2
-    y = int(height * 0.025)
-    canvas.alpha_composite(resized, (x, y))
+    canvas.alpha_composite(fitted, (0, 0))
     return canvas
 
 
