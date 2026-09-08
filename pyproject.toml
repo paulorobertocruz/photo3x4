@@ -1,0 +1,28 @@
+[project]
+name = "photo3x4"
+version = "0.1.0"
+description = "Gerador local de fotos 3x4 brasileiras a partir de selfies."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "pillow>=10.4.0",
+    "python-multipart>=0.0.9",
+    "rembg[cpu]>=2.0.59",
+    "typer>=0.12.5",
+    "uvicorn[standard]>=0.30.6",
+]
+
+[project.scripts]
+photo3x4 = "photo3x4.cli:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/photo3x4"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
