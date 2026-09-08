@@ -25,14 +25,15 @@ def compose_photo(subject: Image.Image, size: tuple[int, int]) -> Image.Image:
         rgba = rgba.crop(bbox)
 
     width, height = size
-    # Reserva uma margem visual e prioriza uma cabeça/ombros bem enquadrados.
-    target_w, target_h = int(width * 0.78), int(height * 0.88)
-    scale = min(target_w / rgba.width, target_h / rgba.height)
+    # Preenche o quadro 3:4. O ``max`` faz o recorte necessário para que
+    # nunca sobrem faixas vazias quando a selfie tem outra proporção.
+    target_w, target_h = int(width * 0.96), int(height * 0.95)
+    scale = max(target_w / rgba.width, target_h / rgba.height)
     resized = rgba.resize((max(1, int(rgba.width * scale)), max(1, int(rgba.height * scale))), Image.Resampling.LANCZOS)
     canvas = Image.new("RGBA", size, "white")
     x = (width - resized.width) // 2
-    y = max(int(height * 0.05), (height - resized.height) // 2)
-    canvas.alpha_composite(resized, (x, min(y, height - resized.height)))
+    y = int(height * 0.025)
+    canvas.alpha_composite(resized, (x, y))
     return canvas
 
 

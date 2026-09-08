@@ -8,7 +8,9 @@ function clearError() { $('#error').classList.add('hidden'); }
 function draw() {
   if (!image) return;
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  const scale = Math.min(canvas.width / image.width, canvas.height / image.height) * zoom;
+  // Usa a selfie como base e sempre cobre o canvas, evitando faixas vazias
+  // ao redimensionar ou aplicar zoom.
+  const scale = Math.max(canvas.width / image.width, canvas.height / image.height) * zoom;
   const width = image.width * scale, height = image.height * scale;
   ctx.drawImage(image, (canvas.width - width) / 2 + offset.x, (canvas.height - height) / 2 + offset.y, width, height);
 }
