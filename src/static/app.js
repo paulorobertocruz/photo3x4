@@ -42,7 +42,12 @@ function canvasBlob() { return new Promise((resolve, reject) => canvas.toBlob(bl
 async function downloadSheet() { const form = new FormData(); form.append('file', await canvasBlob(), 'foto3x4.jpg'); const response = await fetch('/api/sheet', { method: 'POST', body: form }); if (!response.ok) throw new Error('Não foi possível gerar a folha.'); return response.blob(); }
 function freshUuid() { if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID(); return `${Date.now().toString(16)}-${Math.random().toString(16).slice(2)}`; }
 function save(blob, name) { const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = name; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000); }
-$('#download-button').onclick = async () => { try { save(await canvasBlob(), `foto3x4-${freshUuid()}.jpg`); } catch { showError('Não foi possível salvar a foto.'); } };
-$('#sheet-button').onclick = async () => { try { $('#sheet-button').disabled = true; save(await downloadSheet(), `foto3x4-${freshUuid()}-folha.jpg`); } catch (error) { showError(error.message); } finally { $('#sheet-button').disabled = false; } };
-function returnHome() { editor.classList.add('hidden'); home.classList.remove('hidden'); appShell.classList.remove('editing'); input.value = ''; clearError(); }
+const saveModal = $('#save-modal');
+function closeSaveModal() { saveModal.classList.add('hidden'); }
+$('#save-button').onclick = () => saveModal.classList.remove('hidden');
+$('#close-save-modal').onclick = closeSaveModal;
+saveModal.onclick = (event) => { if (event.target === saveModal) closeSaveModal(); };
+$('#save-photo-modal').onclick = async () => { try { save(await canvasBlob(), `foto3x4-${freshUuid()}.jpg`); closeSaveModal(); } catch { showError('Não foi possível salvar a foto.'); } };
+$('#save-sheet-modal').onclick = async () => { try { $('#save-sheet-modal').disabled = true; save(await downloadSheet(), `foto3x4-${freshUuid()}-folha.jpg`); closeSaveModal(); } catch (error) { showError(error.message); } finally { $('#save-sheet-modal').disabled = false; } };
+function returnHome() { editor.classList.add('hidden'); home.classList.remove('hidden'); appShell.classList.remove('editing'); closeSaveModal(); input.value = ''; clearError(); }
 $('#back-button').onclick = returnHome; $('#redo-button').onclick = returnHome;

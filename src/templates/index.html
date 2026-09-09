@@ -23,9 +23,10 @@
       <div class="preview-card"><canvas id="preview" aria-label="Prévia da foto 3x4"></canvas><div class="processing hidden" id="processing"><span class="spinner"></span><span>Removendo o fundo…</span></div></div>
       <div class="controls"><label for="zoom">Zoom <output id="zoom-value">100%</output></label><div class="zoom-control-row"><input id="zoom" type="range" min="100" max="180" value="100"><button class="small-button" data-move="center" aria-label="Recentralizar imagem">⊙</button></div></div>
       <p class="hint">Arraste a imagem no quadro ou recentralize.</p>
-      <div class="bottom-actions"><button class="button primary" id="download-button">↓ &nbsp;Salvar Foto 3x4</button><button class="button secondary" id="sheet-button">▤ &nbsp;Folha 10×15 (8 fotos)</button><button class="text-button" id="redo-button">Refazer foto</button></div>
+      <div class="bottom-actions"><button class="button secondary" id="redo-button">‹ &nbsp;Voltar</button><button class="button primary" id="save-button">↓ &nbsp;Salvar</button></div>
     </section>
     <p class="error hidden" id="error" role="alert"></p>
+    <div class="save-modal hidden" id="save-modal" role="dialog" aria-modal="true" aria-labelledby="save-modal-title"><div class="save-dialog"><button class="save-close" id="close-save-modal" aria-label="Fechar">×</button><p class="eyebrow">Exportar</p><h2 id="save-modal-title">Como deseja salvar?</h2><button class="button primary" id="save-photo-modal">↓ &nbsp;Salvar foto 3x4</button><button class="button secondary" id="save-sheet-modal">▤ &nbsp;Salvar folha 10×15</button></div></div>
   </main>
   <script src="/static/app.js?v=__APP_GIT_SHA__" type="module"></script>
 </body>
