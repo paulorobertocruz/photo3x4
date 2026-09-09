@@ -1,5 +1,5 @@
 const $ = (selector) => document.querySelector(selector);
-const home = $('#home-screen'), editor = $('#editor-screen'), input = $('#gallery-input');
+const home = $('#home-screen'), editor = $('#editor-screen'), input = $('#gallery-input'), appShell = $('.app-shell');
 const canvas = $('#preview'), ctx = canvas.getContext('2d');
 let image = null, imageUrl = null, zoom = 1, offset = { x: 0, y: 0 }, dragging = null;
 
@@ -25,7 +25,7 @@ function enterEditor(blob) {
   if (imageUrl) URL.revokeObjectURL(imageUrl);
   imageUrl = URL.createObjectURL(blob);
   image = new Image(); image.onload = () => { const size = outputSize(image.naturalWidth, image.naturalHeight); canvas.width = size.width; canvas.height = size.height; zoom = 1; offset = { x: 0, y: 0 }; $('#zoom').value = 100; $('#zoom-value').textContent = '100%'; draw(); }; image.src = imageUrl;
-  home.classList.add('hidden'); editor.classList.remove('hidden');
+  home.classList.add('hidden'); editor.classList.remove('hidden'); appShell.classList.add('editing');
 }
 async function process(file) {
   clearError(); $('#processing').classList.remove('hidden');
@@ -44,5 +44,5 @@ function freshUuid() { if (globalThis.crypto?.randomUUID) return globalThis.cryp
 function save(blob, name) { const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = name; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000); }
 $('#download-button').onclick = async () => { try { save(await canvasBlob(), `foto3x4-${freshUuid()}.jpg`); } catch { showError('Não foi possível salvar a foto.'); } };
 $('#sheet-button').onclick = async () => { try { $('#sheet-button').disabled = true; save(await downloadSheet(), `foto3x4-${freshUuid()}-folha.jpg`); } catch (error) { showError(error.message); } finally { $('#sheet-button').disabled = false; } };
-function returnHome() { editor.classList.add('hidden'); home.classList.remove('hidden'); input.value = ''; clearError(); }
+function returnHome() { editor.classList.add('hidden'); home.classList.remove('hidden'); appShell.classList.remove('editing'); input.value = ''; clearError(); }
 $('#back-button').onclick = returnHome; $('#redo-button').onclick = returnHome;
