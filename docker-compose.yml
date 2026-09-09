@@ -1,16 +1,17 @@
 services:
-  photo3x4:
-    build:
-      context: .
-    ports:
-      - "8000:8000"
+  app:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
     environment:
       PYTHONUNBUFFERED: "1"
-    volumes:
-      - rembg-cache:/root/.rembg
-      - u2net-cache:/root/.u2net
-    restart: unless-stopped
+      REMBG_HOME: /opt/rembg
+    command: ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]
+    networks:
+      - backend
 
-volumes:
-  rembg-cache:
-  u2net-cache:
+networks:
+  backend:
+    external: true
+    name: backend

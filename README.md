@@ -43,10 +43,17 @@ make cli ARGS="selfie.jpg --sheet"
 Para executar com Docker Compose:
 
 ```bash
-docker compose up --build
+cp .env.example .env
+docker compose up -d --build
 ```
 
-Acesse `http://localhost:8000`. O cache do modelo do `rembg` é mantido nos volumes `rembg-cache` e `u2net-cache`, evitando um novo download a cada reinicialização.
+O Compose segue as convenções do `home-server-infra`: sobe somente o container da aplicação e conecta-o à rede Docker externa `backend`. Ele não publica portas diretamente no host; o acesso deve ser feito pelo proxy ou túnel configurado na infraestrutura.
+
+Para desenvolvimento local sem a infraestrutura, use `make run` ou `uv run uvicorn src.api:app --reload`.
+
+O modelo CPU `u2netp` é baixado durante o `docker build` e fica embutido na imagem; depois do build, o container não precisa baixar modelos para iniciar ou processar imagens.
+
+O primeiro build precisa de acesso à internet para baixar as dependências e o modelo. Depois, a imagem construída pode ser executada offline.
 
 Para executar em segundo plano:
 
