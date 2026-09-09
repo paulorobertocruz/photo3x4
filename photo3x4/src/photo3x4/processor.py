@@ -22,10 +22,23 @@ def _background_session():
     return _SESSION
 
 
-def process_image(data: bytes, size: str = "300x400", transparent: bool = False) -> Image.Image:
-    """Processa uma selfie usando o modelo local do rembg."""
+def process_image(
+    data: bytes,
+    size: str = "300x400",
+    transparent: bool = False,
+    fit: bool = True,
+) -> Image.Image:
+    """Processa uma selfie usando o modelo local do rembg.
+
+    Quando ``fit`` é falso, mantém o tamanho original para a edição no
+    navegador; o recorte 3:4 acontece apenas no canvas ao exportar.
+    """
     source = open_image(data)
     cutout = remove(source, session=_background_session()).convert("RGBA")
+    if not fit:
+        canvas = Image.new("RGBA", source.size, "white")
+        canvas.alpha_composite(cutout.resize(source.size, Image.Resampling.LANCZOS))
+        return canvas
     if transparent:
         width, height = parse_size(size)
         alpha = cutout.getchannel("A")

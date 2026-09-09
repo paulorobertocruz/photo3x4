@@ -32,9 +32,9 @@ async def health() -> dict[str, str]:
 
 @app.post("/api/process")
 async def process(file: UploadFile = File(...)) -> Response:
-    """Remove o fundo, aplica branco e retorna JPEG 3x4."""
+    """Remove o fundo e retorna a captura completa para edição no navegador."""
     try:
-        result = process_image(await file.read())
+        result = process_image(await file.read(), fit=False)
         return Response(content=image_to_jpeg(result), media_type="image/jpeg")
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -52,4 +52,3 @@ async def sheet(file: UploadFile = File(...)) -> Response:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
         raise HTTPException(status_code=500, detail="Não foi possível gerar a folha.") from exc
-
