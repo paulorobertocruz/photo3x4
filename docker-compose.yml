@@ -1,5 +1,5 @@
 services:
-  app:
+  photo3x4:
     build: .
     restart: unless-stopped
     env_file:
