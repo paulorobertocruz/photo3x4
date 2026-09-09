@@ -5,7 +5,7 @@ from __future__ import annotations
 from PIL import Image
 from rembg import new_session, remove
 
-from .layout import compose_photo, compose_sheet, parse_size
+from .layout import compose_photo, compose_sheet, largest_3x4_size, parse_size
 from .utils import open_image
 
 
@@ -24,7 +24,7 @@ def _background_session():
 
 def process_image(
     data: bytes,
-    size: str = "300x400",
+    size: str | None = None,
     transparent: bool = False,
     fit: bool = True,
 ) -> Image.Image:
@@ -39,8 +39,9 @@ def process_image(
         canvas = Image.new("RGBA", source.size, "white")
         canvas.alpha_composite(cutout.resize(source.size, Image.Resampling.LANCZOS))
         return canvas
+    output_size = largest_3x4_size(source.size) if size is None else parse_size(size)
     if transparent:
-        width, height = parse_size(size)
+        width, height = output_size
         alpha = cutout.getchannel("A")
         bbox = alpha.getbbox()
         if bbox:
@@ -49,7 +50,7 @@ def process_image(
         result = Image.new("RGBA", (width, height), (255, 255, 255, 0))
         result.alpha_composite(cutout, ((width - cutout.width) // 2, (height - cutout.height) // 2))
         return result
-    return compose_photo(cutout, parse_size(size))
+    return compose_photo(cutout, output_size)
 
 
 def process_for_sheet(data: bytes) -> Image.Image:

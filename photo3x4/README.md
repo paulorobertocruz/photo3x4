@@ -35,7 +35,7 @@ uv run photo3x4 selfie.jpg --sheet
 uv run photo3x4 selfie.jpg --transparent
 ```
 
-As opções `--output`, `--sheet`, `--size`, `--dpi` e `--transparent` estão disponíveis. A CLI reutiliza o mesmo pipeline de remoção de fundo e enquadramento da API.
+As opções `--output`, `--sheet`, `--size`, `--dpi` e `--transparent` estão disponíveis. Sem `--size`, a CLI usa a maior resolução 3:4 possível dentro da imagem original. A CLI reutiliza o mesmo pipeline de remoção de fundo e enquadramento da API.
 
 ## API
 

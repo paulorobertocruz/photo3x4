@@ -6,14 +6,22 @@ from PIL import Image, ImageOps
 
 
 def parse_size(value: str) -> tuple[int, int]:
-    """Converte ``300x400`` em uma dimensão 3:4 válida."""
+    """Converte uma dimensão informada em uma proporção 3:4 válida."""
     try:
         width, height = (int(part) for part in value.lower().split("x", 1))
     except (ValueError, AttributeError) as exc:
-        raise ValueError("Tamanho inválido; use o formato 300x400.") from exc
+        raise ValueError("Tamanho inválido; use o formato 600x800.") from exc
     if width < 3 or height < 4 or width * 4 != height * 3:
         raise ValueError("O tamanho precisa manter a proporção 3:4.")
     return width, height
+
+
+def largest_3x4_size(source_size: tuple[int, int]) -> tuple[int, int]:
+    """Retorna o maior recorte 3:4 possível dentro de uma imagem."""
+    source_width, source_height = source_size
+    if source_width / source_height > 3 / 4:
+        return max(3, int(source_height * 3 / 4)), source_height
+    return source_width, max(4, int(source_width * 4 / 3))
 
 
 def compose_photo(subject: Image.Image, size: tuple[int, int]) -> Image.Image:

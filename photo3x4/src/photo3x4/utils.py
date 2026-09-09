@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from io import BytesIO
 from pathlib import Path
+from uuid import uuid4
 
 from PIL import Image, UnidentifiedImageError
 
@@ -46,3 +47,8 @@ def image_to_png(image: Image.Image, dpi: int = 300) -> bytes:
 def stem_for(path: Path) -> str:
     """Retorna o nome-base seguro de um arquivo para saídas da CLI."""
     return path.stem or "foto"
+
+
+def export_uuid() -> str:
+    """Retorna um identificador curto e novo para nomes de exportação."""
+    return uuid4().hex
