@@ -1,0 +1,16 @@
+services:
+  photo3x4:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - rembg-cache:/root/.rembg
+      - u2net-cache:/root/.u2net
+    restart: unless-stopped
+
+volumes:
+  rembg-cache:
+  u2net-cache:
