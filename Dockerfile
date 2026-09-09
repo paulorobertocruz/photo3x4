@@ -2,8 +2,11 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 WORKDIR /app
 
+ARG APP_GIT_SHA=unknown
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    APP_GIT_SHA=${APP_GIT_SHA} \
     REMBG_HOME=/opt/rembg \
     PATH="/app/.venv/bin:$PATH"
 

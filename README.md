@@ -53,6 +53,18 @@ Para desenvolvimento local sem a infraestrutura, use `make run` ou `uv run uvico
 
 O modelo CPU `u2netp` é baixado durante o `docker build` e fica embutido na imagem; depois do build, o container não precisa baixar modelos para iniciar ou processar imagens.
 
+O hash do commit é injetado automaticamente nos assets do frontend para evitar cache antigo. Para construir localmente com a revisão atual:
+
+```bash
+make build
+```
+
+Em um deploy manual, use o mesmo padrão:
+
+```bash
+APP_GIT_SHA=$(git rev-parse --short HEAD) docker compose up -d --build
+```
+
 O primeiro build precisa de acesso à internet para baixar as dependências e o modelo. Depois, a imagem construída pode ser executada offline.
 
 Para executar em segundo plano:

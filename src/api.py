@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from io import BytesIO
+import os
+import subprocess
 from pathlib import Path
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -18,10 +19,30 @@ app = FastAPI(title="photo3x4", version="0.1.0")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 
+def git_revision() -> str:
+    """Obtém a revisão para versionar os assets do frontend."""
+    configured = os.getenv("APP_GIT_SHA")
+    if configured:
+        return configured[:40]
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=BASE_DIR.parent,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "dev"
+
+
 @app.get("/", response_class=HTMLResponse)
-async def home() -> str:
+async def home() -> HTMLResponse:
     """Entrega a aplicação web de uma página."""
-    return (BASE_DIR / "templates" / "index.html").read_text(encoding="utf-8")
+    template = (BASE_DIR / "templates" / "index.html").read_text(encoding="utf-8")
+    return HTMLResponse(
+        content=template.replace("__APP_GIT_SHA__", git_revision()),
+        headers={"Cache-Control": "no-store, max-age=0"},
+    )
 
 
 @app.get("/health")
