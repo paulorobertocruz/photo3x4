@@ -21,8 +21,8 @@
     <section class="screen editor hidden" id="editor-screen">
       <div class="editor-heading"><button class="icon-button" id="back-button" aria-label="Voltar">‹</button><div class="editor-brand"><span class="logo-mark">▦</span><strong>photo3x4</strong></div><div class="editor-context"><p class="eyebrow">Ajuste final</p><h2>Sua foto 3x4</h2></div></div>
       <div class="preview-card"><canvas id="preview" aria-label="Prévia da foto 3x4"></canvas><div class="processing hidden" id="processing"><span class="spinner"></span><span>Removendo o fundo…</span></div></div>
-      <div class="controls"><label for="zoom">Zoom <output id="zoom-value">100%</output></label><input id="zoom" type="range" min="100" max="180" value="100"><div class="move-buttons"><button class="small-button" data-move="up">↑</button><button class="small-button" data-move="left">←</button><button class="small-button" data-move="center">⊙</button><button class="small-button" data-move="right">→</button><button class="small-button" data-move="down">↓</button></div></div>
-      <p class="hint">Arraste a imagem no quadro ou use os controles.</p>
+      <div class="controls"><label for="zoom">Zoom <output id="zoom-value">100%</output></label><div class="zoom-control-row"><input id="zoom" type="range" min="100" max="180" value="100"><button class="small-button" data-move="center" aria-label="Recentralizar imagem">⊙</button></div></div>
+      <p class="hint">Arraste a imagem no quadro ou recentralize.</p>
       <div class="bottom-actions"><button class="button primary" id="download-button">↓ &nbsp;Salvar Foto 3x4</button><button class="button secondary" id="sheet-button">▤ &nbsp;Folha 10×15 (8 fotos)</button><button class="text-button" id="redo-button">Refazer foto</button></div>
     </section>
     <p class="error hidden" id="error" role="alert"></p>
