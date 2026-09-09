@@ -4,6 +4,10 @@ Aplicação 100% local para gerar fotos 3x4 brasileiras a partir de uma selfie. 
 
 O código da aplicação fica diretamente em `src/`, sem uma subpasta de pacote adicional.
 
+## Versão online
+
+A aplicação está disponível em [photo3x4.heetoo.dev](https://photo3x4.heetoo.dev).
+
 ## Instalação
 
 Instale o [uv](https://docs.astral.sh/uv/) e sincronize o ambiente:
