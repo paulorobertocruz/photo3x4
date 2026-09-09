@@ -51,6 +51,17 @@ async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.get("/sw.js")
+async def service_worker() -> Response:
+    """Entrega o service worker no escopo da aplicação inteira."""
+    service_worker_file = (BASE_DIR / "static" / "sw.js").read_bytes()
+    return Response(
+        content=service_worker_file,
+        media_type="application/javascript",
+        headers={"Service-Worker-Allowed": "/", "Cache-Control": "no-cache"},
+    )
+
+
 @app.post("/api/process")
 async def process(file: UploadFile = File(...)) -> Response:
     """Remove o fundo e retorna a captura completa para edição no navegador."""

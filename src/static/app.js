@@ -3,6 +3,13 @@ const home = $('#home-screen'), editor = $('#editor-screen'), input = $('#galler
 const canvas = $('#preview'), ctx = canvas.getContext('2d');
 let image = null, imageUrl = null, zoom = 1, offset = { x: 0, y: 0 }, dragging = null, returnToCamera = false;
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const revision = document.querySelector('meta[name="app-git-sha"]')?.content || 'dev';
+    navigator.serviceWorker.register(`/sw.js?v=${encodeURIComponent(revision)}`, { scope: '/' }).catch(() => {});
+  });
+}
+
 function showError(message) { const box = $('#error'); box.textContent = message; box.classList.remove('hidden'); }
 function clearError() { $('#error').classList.add('hidden'); }
 function draw() {
@@ -49,5 +56,5 @@ $('#close-save-modal').onclick = closeSaveModal;
 saveModal.onclick = (event) => { if (event.target === saveModal) closeSaveModal(); };
 $('#save-photo-modal').onclick = async () => { try { save(await canvasBlob(), `foto3x4-${freshUuid()}.jpg`); closeSaveModal(); } catch { showError('Não foi possível salvar a foto.'); } };
 $('#save-sheet-modal').onclick = async () => { try { $('#save-sheet-modal').disabled = true; save(await downloadSheet(), `foto3x4-${freshUuid()}-folha.jpg`); closeSaveModal(); } catch (error) { showError(error.message); } finally { $('#save-sheet-modal').disabled = false; } };
-function returnHome() { editor.classList.add('hidden'); appShell.classList.remove('editing'); closeSaveModal(); input.value = ''; clearError(); if (returnToCamera) { home.classList.add('hidden'); $('#camera-button').click(); } else { home.classList.remove('hidden'); } }
+function returnHome() { editor.classList.add('hidden'); appShell.classList.remove('editing'); closeSaveModal(); input.value = ''; clearError(); home.classList.remove('hidden'); if (returnToCamera) $('#camera-button').click(); }
 $('#back-button').onclick = returnHome; $('#redo-button').onclick = returnHome;

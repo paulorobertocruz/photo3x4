@@ -1,1 +1,1 @@
-{"name":"photo3x4","short_name":"photo3x4","start_url":"/","display":"standalone","background_color":"#f6f7fb","theme_color":"#f6f7fb","icons":[]}
+{"name":"photo3x4","short_name":"photo3x4","description":"Fotos 3x4 brasileiras diretamente no seu dispositivo.","start_url":"/","scope":"/","display":"standalone","background_color":"#f6f7fb","theme_color":"#2457f5","icons":[{"src":"/static/icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}

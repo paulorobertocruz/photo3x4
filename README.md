@@ -28,6 +28,10 @@ uv run uvicorn src.api:app --host 0.0.0.0 --port 8000
 
 Depois acesse `http://IP-DO-COMPUTADOR:8000` no Safari ou Chrome. A câmera do navegador exige contexto seguro em muitos celulares; `localhost` é tratado como seguro, enquanto acesso por IP pode exigir HTTPS conforme o navegador.
 
+## PWA
+
+A interface inclui manifest, ícone e service worker para instalação como aplicativo no navegador. Em `localhost` ela pode ser instalada diretamente; em outros dispositivos, use HTTPS. O shell da interface é mantido em cache, enquanto o processamento de imagens continua sendo feito pelo servidor local.
+
 ## Makefile
 
 Atalhos disponíveis:
