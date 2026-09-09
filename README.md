@@ -15,13 +15,13 @@ Na primeira execução, o `rembg` baixa uma vez o modelo CPU leve `u2netp` (cerc
 ## Servidor web
 
 ```bash
-uv run uvicorn photo3x4.api:app --reload
+uv run uvicorn src.api:app --reload
 ```
 
 Abra `http://127.0.0.1:8000`. Para usar no celular conectado à mesma rede Wi-Fi:
 
 ```bash
-uv run uvicorn photo3x4.api:app --host 0.0.0.0 --port 8000
+uv run uvicorn src.api:app --host 0.0.0.0 --port 8000
 ```
 
 Depois acesse `http://IP-DO-COMPUTADOR:8000` no Safari ou Chrome. A câmera do navegador exige contexto seguro em muitos celulares; `localhost` é tratado como seguro, enquanto acesso por IP pode exigir HTTPS conforme o navegador.
@@ -45,4 +45,4 @@ As opções `--output`, `--sheet`, `--size`, `--dpi` e `--transparent` estão di
 
 ## Estrutura
 
-O backend fica em `src/photo3x4`, com rotas em `api.py`, processamento em `processor.py`, composição em `layout.py` e comandos em `cli.py`. O frontend é servido pelo FastAPI e usa apenas HTML, CSS e JavaScript nativos.
+O backend fica diretamente em `src`, com rotas em `api.py`, processamento em `processor.py`, composição em `layout.py` e comandos em `cli.py`. O frontend é servido pelo FastAPI e usa apenas HTML, CSS e JavaScript nativos.

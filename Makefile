@@ -4,7 +4,7 @@ install:
 	uv sync
 
 run:
-	uv run uvicorn photo3x4.api:app --reload
+	uv run uvicorn src.api:app --reload
 
 cli:
 	uv run photo3x4 $(ARGS)
